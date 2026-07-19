@@ -90,7 +90,20 @@ export default config({
       columns: ['title', 'category', 'draft', 'featured'],
       schema: {
         title: fields.text({ label: '标题', validation: { isRequired: true } }),
-        slug: fields.slug({ name: { label: '标题' }, slug: { label: '网址标识' } }),
+        slug: fields.slug({
+          name: { label: '标题' },
+          slug: {
+            label: '网址标识',
+            description: '仅限小写英文、数字和连字符，例如 my-first-article。',
+            validation: {
+              length: { min: 1, max: 160 },
+              pattern: {
+                regex: /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+                message: '请输入小写英文、数字和连字符，且不能以连字符开头或结尾。',
+              },
+            },
+          },
+        }),
         summary: fields.text({ label: '摘要', multiline: true, validation: { isRequired: true } }),
         body: fields.text({ label: '正文（Markdown-compatible 文本）', multiline: true }),
         coverImage: fields.image({
