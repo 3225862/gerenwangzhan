@@ -4,6 +4,6 @@ summary: '444'
 body: '555'
 category: '666'
 tags: []
-draft: true
-publicationStatus: draft
+draft: false
+publicationStatus: published
 featured: false
