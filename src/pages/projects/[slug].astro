@@ -6,8 +6,18 @@ import Section from '../../components/Section.astro';
 import SiteLayout from '../../layouts/SiteLayout.astro';
 import { getCollection } from 'astro:content';
 import { paragraphs, publicEntries, sortEntries } from '../../lib/extended-models.js';
-export async function getStaticPaths() { const projects = publicEntries(await getCollection('projects')); return projects.map((project) => ({ params: { slug: project.data.slug }, props: { project, all: sortEntries(projects) } })); }
-const { project, all } = Astro.props; const { data } = project; const index = all.findIndex((item) => item.data.slug === data.slug); const previous = all[index - 1]; const next = all[index + 1];
+const slug = Astro.params.slug;
+const all = sortEntries(publicEntries(await getCollection('projects')));
+const project = all.find((item) => item.data.slug === slug);
+
+if (!project) {
+  return new Response('Not Found', { status: 404 });
+}
+
+const { data } = project;
+const index = all.findIndex((item) => item.data.slug === data.slug);
+const previous = all[index - 1];
+const next = all[index + 1];
 ---
 <SiteLayout title={data.title} description={data.summary}>
   <Section><ContentContainer><p class="caption"><a href="/projects/">返回项目列表</a></p><div class="project-detail-header"><div><div class="cluster"><span class="tag">{data.status}</span>{data.featured && <span class="tag">推荐</span>}</div><h1>{data.title}</h1>{data.subtitle && <p class="muted">{data.subtitle}</p>}<p class="project-lead">{data.summary}</p></div>{data.coverImage && <ImageFrame src={data.coverImage} alt={`${data.title} 封面`} />}</div>

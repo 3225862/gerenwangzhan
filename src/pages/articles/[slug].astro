@@ -6,8 +6,15 @@ import Section from '../../components/Section.astro';
 import SiteLayout from '../../layouts/SiteLayout.astro';
 import { getCollection } from 'astro:content';
 import { paragraphs, publicEntries } from '../../lib/extended-models.js';
-export async function getStaticPaths() { return publicEntries(await getCollection('articles')).map((article) => ({ params: { slug: article.data.slug }, props: { article } })); }
-const { data } = Astro.props.article; const readingTime = Math.max(1, Math.ceil(data.body.split(/\s+/).length / 220));
+const slug = Astro.params.slug;
+const article = publicEntries(await getCollection('articles')).find((item) => item.data.slug === slug);
+
+if (!article) {
+  return new Response('Not Found', { status: 404 });
+}
+
+const { data } = article;
+const readingTime = Math.max(1, Math.ceil(data.body.split(/\s+/).length / 220));
 ---
 <SiteLayout title={data.seoTitle || data.title} description={data.seoDescription || data.summary}>
   <Section><ContentContainer><p class="caption"><a href="/articles/">返回文章列表</a></p><div class="article-header"><div class="caption">{data.category}{data.publishedAt && ` · ${data.publishedAt.toLocaleDateString('zh-CN')}`} · 阅读约 {readingTime} 分钟</div><h1>{data.title}</h1><p class="article-lead">{data.summary}</p>{data.tags.length > 0 && <div class="cluster">{data.tags.map((tag) => <span class="tag">{tag}</span>)}</div>}</div>{data.coverImage && <ImageFrame src={data.coverImage} alt={`${data.title} 封面`} />}<div class="article-body">{paragraphs(data.body).map((text) => <p>{text}</p>)}</div></ContentContainer></Section>

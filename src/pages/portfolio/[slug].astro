@@ -1,6 +1,18 @@
 ---
 // @ts-nocheck
-import { getCollection } from 'astro:content'; import ContentContainer from '../../components/ContentContainer.astro'; import Section from '../../components/Section.astro'; import SiteLayout from '../../layouts/SiteLayout.astro'; import { paragraphs, publicEntries } from '../../lib/extended-models.js';
-export async function getStaticPaths() { return publicEntries(await getCollection('portfolio')).map((item) => ({ params: { slug: item.data.slug }, props: { item } })); } const { data } = Astro.props.item;
+import { getCollection } from 'astro:content';
+import ContentContainer from '../../components/ContentContainer.astro';
+import Section from '../../components/Section.astro';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import { paragraphs, publicEntries } from '../../lib/extended-models.js';
+
+const slug = Astro.params.slug;
+const item = publicEntries(await getCollection('portfolio')).find((entry) => entry.data.slug === slug);
+
+if (!item) {
+  return new Response('Not Found', { status: 404 });
+}
+
+const { data } = item;
 ---
 <SiteLayout title={data.title} description={data.summary}><Section><ContentContainer><p class="caption"><a href="/portfolio/">返回作品列表</a></p><h1>{data.title}</h1><p class="project-lead">{data.summary}</p><div class="article-body">{paragraphs(data.body).map((text) => <p>{text}</p>)}</div>{data.externalUrl && <a href={data.externalUrl} rel="noreferrer">查看外部链接</a>}</ContentContainer></Section></SiteLayout>
