@@ -1,5 +1,8 @@
 import { collection, config, fields, singleton } from '@keystatic/core';
 
+const isGithubMode = (process.env.KEYSTATIC_MODE ?? (process.env.NODE_ENV === 'production' ? 'github' : 'local')) === 'github';
+const githubRepo = process.env.KEYSTATIC_GITHUB_REPO ?? 'owner/repository';
+
 const imageOptions = {
   directory: 'public/uploads/projects',
   publicPath: '/uploads/projects/',
@@ -7,8 +10,7 @@ const imageOptions = {
 
 export default config({
   storage: {
-    // P0 local mode. P9 will switch this block to GitHub mode with server-only env vars.
-    kind: 'local',
+    ...(isGithubMode ? { kind: 'github' as const, repo: githubRepo } : { kind: 'local' as const }),
   },
   ui: {
     brand: { name: 'Website Studio' },
