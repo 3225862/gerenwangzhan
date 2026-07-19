@@ -2,17 +2,10 @@ title: 文章内容待补充
 slug: article-placeholder
 summary: 这是文章系统的明确占位内容，正式文章待补充。
 body: 文章正文占位内容，正式写作内容待补充。
-coverImage: null
 category: 占位
 tags:
   - 占位
 author: 待补充
-publishedAt: null
-updatedAt: null
-draft: true
-publicationStatus: draft
+draft: false
+publicationStatus: published
 featured: false
-seoTitle: ''
-seoDescription: ''
-canonicalUrl: ''
-socialImage: null
