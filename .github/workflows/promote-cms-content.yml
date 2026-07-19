@@ -1,0 +1,51 @@
+name: Promote CMS content to production
+
+on:
+  push:
+    branches-ignore:
+      - main
+
+permissions:
+  contents: write
+
+concurrency:
+  group: promote-cms-content-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out production branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Promote content-only CMS changes
+        env:
+          SOURCE_BRANCH: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          git fetch origin main "$SOURCE_BRANCH"
+
+          changed_files="$(git diff --name-only "origin/main...origin/$SOURCE_BRANCH")"
+          if [ -z "$changed_files" ]; then
+            echo "No changes need promotion."
+            exit 0
+          fi
+
+          while IFS= read -r file; do
+            case "$file" in
+              src/content/*|src/data/*|public/uploads/*) ;;
+              *)
+                echo "Refusing to promote non-content file: $file"
+                exit 1
+                ;;
+            esac
+          done <<< "$changed_files"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git merge --no-ff "origin/$SOURCE_BRANCH" -m "Promote CMS content from $SOURCE_BRANCH"
+          git push origin HEAD:main
