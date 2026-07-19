@@ -1,0 +1,34 @@
+---
+import '../styles/global.css';
+import SkipLink from '../components/SkipLink.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import { siteConfig } from '../lib/site-config';
+
+interface Props { title?: string; description?: string; noindex?: boolean }
+const { title = siteConfig.siteName, description = siteConfig.description, noindex = false } = Astro.props;
+---
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={Astro.url.pathname} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url.pathname} />
+    {noindex && <meta name="robots" content="noindex,nofollow" />}
+    <title>{title}</title>
+    <script is:inline>try { const t = localStorage.getItem('theme'); document.documentElement.dataset.theme = t === 'light' || t === 'dark' ? t : window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; } catch {}</script>
+  </head>
+  <body>
+    <div class="site-shell">
+      <SkipLink />
+      <SiteHeader />
+      <main id="main-content" class="site-main"><slot /></main>
+      <SiteFooter />
+    </div>
+  </body>
+</html>

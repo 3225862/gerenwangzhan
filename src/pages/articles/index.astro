@@ -1,0 +1,11 @@
+---
+// @ts-nocheck
+import { getCollection } from 'astro:content';
+import ContentContainer from '../../components/ContentContainer.astro';
+import Section from '../../components/Section.astro';
+import SectionHeader from '../../components/SectionHeader.astro';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import { publicEntries, sortEntries } from '../../lib/extended-models.js';
+const articles = sortEntries(publicEntries(await getCollection('articles'))).sort((a, b) => (b.data.publishedAt?.getTime() ?? 0) - (a.data.publishedAt?.getTime() ?? 0));
+---
+<SiteLayout title="文章" description="文章与思考记录。"><Section><ContentContainer><SectionHeader eyebrow="文章" title="文章与思考" description="持续整理中的文字记录。" />{articles.length === 0 ? <div class="empty-state">暂无已发布文章。</div> : <div class="article-list">{articles.map(({ data }) => <article class="article-list-item"><div class="caption">{data.category}{data.publishedAt && ` · ${data.publishedAt.toLocaleDateString('zh-CN')}`}</div><h2><a href={`/articles/${data.slug}/`}>{data.title}</a></h2><p>{data.summary}</p>{data.tags.length > 0 && <div class="cluster">{data.tags.map((tag) => <span class="tag">{tag}</span>)}</div>}</article>)}</div>}</ContentContainer></Section></SiteLayout>

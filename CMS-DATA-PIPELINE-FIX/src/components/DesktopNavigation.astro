@@ -1,0 +1,9 @@
+---
+import { getNavigationItems } from '../lib/navigation';
+import { getSiteData } from '../lib/site-data.js';
+const site = await getSiteData();
+const items = getNavigationItems(site.navigation, Astro.url.pathname);
+---
+<nav class="desktop-navigation" aria-label="主导航">
+  {items.map((item) => <a class="navigation-link" href={item.href} aria-current={item.current ? 'page' : undefined}>{item.label}</a>)}
+</nav>

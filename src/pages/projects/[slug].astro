@@ -1,0 +1,19 @@
+---
+// @ts-nocheck
+import ContentContainer from '../../components/ContentContainer.astro';
+import ImageFrame from '../../components/ImageFrame.astro';
+import Section from '../../components/Section.astro';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import { getCollection } from 'astro:content';
+import { paragraphs, publicEntries, sortEntries } from '../../lib/extended-models.js';
+export async function getStaticPaths() { const projects = publicEntries(await getCollection('projects')); return projects.map((project) => ({ params: { slug: project.data.slug }, props: { project, all: sortEntries(projects) } })); }
+const { project, all } = Astro.props; const { data } = project; const index = all.findIndex((item) => item.data.slug === data.slug); const previous = all[index - 1]; const next = all[index + 1];
+---
+<SiteLayout title={data.title} description={data.summary}>
+  <Section><ContentContainer><p class="caption"><a href="/projects/">返回项目列表</a></p><div class="project-detail-header"><div><div class="cluster"><span class="tag">{data.status}</span>{data.featured && <span class="tag">推荐</span>}</div><h1>{data.title}</h1>{data.subtitle && <p class="muted">{data.subtitle}</p>}<p class="project-lead">{data.summary}</p></div>{data.coverImage && <ImageFrame src={data.coverImage} alt={`${data.title} 封面`} />}</div>
+    <div class="project-facts">{data.role && <div><dt>角色</dt><dd>{data.role}</dd></div>}{data.publishedAt && <div><dt>时间</dt><dd>{data.publishedAt.toLocaleDateString('zh-CN')}</dd></div>}{data.methods?.length > 0 && <div><dt>技术与方法</dt><dd>{data.methods.join('、')}</dd></div>}{data.tags?.length > 0 && <div><dt>标签</dt><dd>{data.tags.join('、')}</dd></div>}</div>
+    <div class="project-body">{paragraphs(data.body).map((text) => <p>{text}</p>)}</div>
+    {(data.externalUrl || data.githubUrl || data.demoUrl) && <div class="cluster project-links">{data.externalUrl && <a href={data.externalUrl} rel="noreferrer">项目链接</a>}{data.githubUrl && <a href={data.githubUrl} rel="noreferrer">GitHub</a>}{data.demoUrl && <a href={data.demoUrl} rel="noreferrer">演示</a>}</div>}
+    <nav class="project-pager" aria-label="项目导航">{previous && <a href={`/projects/${previous.data.slug}/`}>上一项：{previous.data.title}</a>}{next && <a href={`/projects/${next.data.slug}/`}>下一项：{next.data.title}</a>}</nav>
+  </ContentContainer></Section>
+</SiteLayout>

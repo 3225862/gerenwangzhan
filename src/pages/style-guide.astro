@@ -1,0 +1,43 @@
+---
+import Button from '../components/Button.astro';
+import Card from '../components/Card.astro';
+import ContentContainer from '../components/ContentContainer.astro';
+import Divider from '../components/Divider.astro';
+import ImageFrame from '../components/ImageFrame.astro';
+import Section from '../components/Section.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import Tag from '../components/Tag.astro';
+---
+
+<SiteLayout title="Style Guide | 内部验收" noindex>
+  <Section>
+    <ContentContainer>
+      <SectionHeader eyebrow="Internal only" title="设计系统 Style Guide" description="仅供开发验收使用，当前内容是占位样例，不代表正式首页或业务页面。" />
+
+      <div class="stack">
+        <Card>
+          <h1>超大标题示例</h1>
+          <h2>页面标题示例</h2>
+          <h3>Section 标题示例</h3>
+          <p class="muted">Large English heading with 中文和日本語の混排。</p>
+          <p>这是一段用于观察中文、日文和英文混排的长正文。The quick brown fox jumps over the lazy dog. 访问者可以通过清晰的节奏阅读内容，而不需要依赖装饰性动画。</p>
+          <p>Long word check: pneumonoultramicroscopicsilicovolcanoconiosis</p>
+        </Card>
+
+        <div class="cluster">
+          <Button href="#" variant="primary">主要按钮</Button>
+          <Button href="#" variant="secondary">次要按钮</Button>
+          <Button href="#" variant="ghost">幽灵按钮</Button>
+          <Button disabled>禁用按钮</Button>
+        </div>
+
+        <div class="cluster"><a href="#">链接状态</a><Tag>标签样式</Tag><Tag>日本語</Tag><Tag>English</Tag></div>
+        <Divider />
+        <ImageFrame alt="占位图片容器" />
+        <div class="empty-state">空状态：这里暂时没有可展示的内容。</div>
+        <p class="caption">辅助文字和 caption 样式。请使用键盘 Tab 检查焦点状态，并使用系统设置检查减少动画。</p>
+      </div>
+    </ContentContainer>
+  </Section>
+</SiteLayout>

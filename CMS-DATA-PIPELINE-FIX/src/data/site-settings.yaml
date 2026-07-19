@@ -1,0 +1,39 @@
+siteName: 个人网站
+siteDescription: 记录项目、文章与长期思考的个人空间。
+contentStatus: ready
+defaultLanguage: zh
+availableLanguages:
+  - zh
+  - ja
+  - en
+email: hello@example.com
+emailPublic: false
+socialLinks: []
+footerText: 个人网站
+resumeUrl: ''
+resumePublic: false
+navigation:
+  - label: 首页
+    href: /
+    visible: true
+    sortOrder: 1
+  - label: 关于我
+    href: /about/
+    visible: true
+    sortOrder: 2
+  - label: 项目
+    href: /projects/
+    visible: true
+    sortOrder: 3
+  - label: 文章
+    href: /articles/
+    visible: true
+    sortOrder: 4
+  - label: 时间轴
+    href: /timeline/
+    visible: true
+    sortOrder: 5
+  - label: 作品
+    href: /portfolio/
+    visible: true
+    sortOrder: 6

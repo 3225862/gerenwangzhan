@@ -1,0 +1,31 @@
+---
+import { getNavigationItems } from '../lib/navigation';
+import { getSiteData } from '../lib/site-data.js';
+const site = await getSiteData();
+const items = getNavigationItems(site.navigation, Astro.url.pathname);
+---
+<button class="control-button mobile-menu-button" type="button" data-menu-open aria-controls="mobile-menu" aria-expanded="false" aria-label="打开菜单" title="打开菜单"><span aria-hidden="true">☰</span></button>
+<dialog class="mobile-menu" id="mobile-menu" data-mobile-menu aria-label="移动端导航">
+  <div class="mobile-menu__inner">
+    <div class="mobile-menu__top">
+      <a class="site-brand" href="/">{site.siteName}</a>
+      <button class="control-button" type="button" data-menu-close aria-label="关闭菜单" title="关闭菜单"><span aria-hidden="true">×</span></button>
+    </div>
+    <nav class="mobile-menu__links" aria-label="移动端主导航">
+      {items.map((item) => <a class="mobile-menu__link" href={item.href} aria-current={item.current ? 'page' : undefined}>{item.label}</a>)}
+    </nav>
+    <div class="mobile-menu__footer"><slot /></div>
+  </div>
+</dialog>
+
+<script>
+  const menu = document.querySelector<HTMLDialogElement>('[data-mobile-menu]');
+  const openButton = document.querySelector<HTMLButtonElement>('[data-menu-open]');
+  const closeButton = document.querySelector<HTMLButtonElement>('[data-menu-close]');
+  const closeMenu = () => { menu?.close(); openButton?.setAttribute('aria-expanded', 'false'); closeButton?.focus(); };
+  openButton?.addEventListener('click', () => { menu?.showModal(); openButton?.setAttribute('aria-expanded', 'true'); closeButton?.focus(); });
+  closeButton?.addEventListener('click', closeMenu);
+  menu?.addEventListener('click', (event) => { if (event.target === menu) closeMenu(); });
+  menu?.addEventListener('cancel', (event) => { event.preventDefault(); closeMenu(); });
+  menu?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => menu?.close()));
+</script>

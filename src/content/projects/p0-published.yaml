@@ -1,0 +1,11 @@
+title: 示例项目（仅供学习，不会公开）
+slug: p0-published
+summary: 用于验证已发布项目可以从仓库内容生成公开详情页。
+body: 这是 P0 的最小公开测试正文。
+coverImage: null
+status: completed
+featured: false
+sortOrder: 1
+publishedAt: 2026-07-13
+draft: true
+publicationStatus: draft

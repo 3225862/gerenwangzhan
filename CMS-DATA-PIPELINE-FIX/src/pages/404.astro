@@ -1,0 +1,14 @@
+---
+import ContentContainer from '../components/ContentContainer.astro';
+import SiteLayout from '../layouts/SiteLayout.astro';
+---
+<SiteLayout title="页面不存在">
+  <section class="section">
+    <ContentContainer>
+      <p class="section-header__eyebrow">404</p>
+      <h1>页面不存在</h1>
+      <p class="muted">你访问的地址暂时没有内容。</p>
+      <a class="button button--secondary" href="/">返回首页</a>
+    </ContentContainer>
+  </section>
+</SiteLayout>

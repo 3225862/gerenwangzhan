@@ -1,0 +1,29 @@
+---
+import DesktopNavigation from './DesktopNavigation.astro';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import MobileNavigation from './MobileNavigation.astro';
+import ThemeToggle from './ThemeToggle.astro';
+import PageContainer from './PageContainer.astro';
+import { getSiteData } from '../lib/site-data.js';
+const site = await getSiteData();
+---
+<header class="site-header" data-site-header>
+  <PageContainer>
+    <div class="site-header__inner">
+      <a class="site-brand" href="/" aria-label={`${site.siteName} 首页`}>{site.siteName}</a>
+      <DesktopNavigation />
+      <div class="header-actions">
+        <LanguageSwitcher />
+        <ThemeToggle />
+        <MobileNavigation><LanguageSwitcher /></MobileNavigation>
+      </div>
+    </div>
+  </PageContainer>
+</header>
+
+<script>
+  const header = document.querySelector('[data-site-header]');
+  const updateHeader = () => header?.toggleAttribute('data-scrolled', window.scrollY > 8);
+  updateHeader();
+  window.addEventListener('scroll', updateHeader, { passive: true });
+</script>

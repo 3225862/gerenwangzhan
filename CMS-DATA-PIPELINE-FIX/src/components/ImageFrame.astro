@@ -1,0 +1,7 @@
+---
+interface Props { src?: string; alt?: string; class?: string }
+const { src, alt = '', class: className = '' } = Astro.props;
+---
+<div class:list={['image-frame', className]}>
+  {src ? <img src={src} alt={alt} loading="lazy" /> : <div aria-hidden="true"></div>}
+</div>

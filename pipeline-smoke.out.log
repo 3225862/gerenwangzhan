@@ -1,0 +1,24 @@
+
+> dev
+> node scripts/dev.mjs --host 127.0.0.1
+
+[2m04:37:27[22m [34m[vite][39m connected.
+[2m04:37:30[22m [34m[types][39m Generated [2m2ms[22m
+[2m04:37:30[22m [34m[vite][39m connected.
+[2m04:37:31[22m [34m[content][39m Syncing content
+[2m04:37:31[22m [34m[content][39m Synced content
+[2m04:37:31[22m [34m[vite][39m Re-optimizing dependencies because vite config has changed
+[42m[1m astro [22m[49m [32mv7.0.7[39m [2mready in[22m 6397 [2mms[22m
+[2m┃[22m Local    [36mhttp://127.0.0.1:4321/[39m
+[2m04:37:31[22m [32mwatching for file changes...[39m
+[2m04:37:32[22m [34m[vite][39m [optimizer] bundling dependencies...
+[2m04:37:32[22m [34m[glob-loader][39m Reloaded data from [32mhomepage.yaml[39m
+[2m04:37:36[22m [34m[200][39m / [2m185ms[22m
+[2m04:37:36[22m [34m[glob-loader][39m Reloaded data from [32mprofile.yaml[39m
+[2m04:37:39[22m [34m[200][39m /about/ [2m32ms[22m
+[2m04:37:39[22m [34m[glob-loader][39m Reloaded data from [32mp11-audit-project.yaml[39m
+[2m04:37:43[22m [34m[200][39m /projects/ [2m16ms[22m
+[2m04:37:43[22m [34m[glob-loader][39m Reloaded data from [32mp11-audit-article.yaml[39m
+[2m04:37:48[22m [34m[200][39m /articles/ [2m18ms[22m
+[2m04:37:48[22m [34m[glob-loader][39m Reloaded data from [32mhomepage.yaml[39m
+[2m04:37:48[22m [34m[glob-loader][39m Reloaded data from [32mprofile.yaml[39m

@@ -1,0 +1,5 @@
+---
+interface Props { class?: string; compact?: boolean; id?: string }
+const { class: className = '', compact = false, id } = Astro.props;
+---
+<section id={id} class:list={['section', compact && 'section--compact', className]}><slot /></section>

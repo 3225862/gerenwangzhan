@@ -1,0 +1,4 @@
+---
+const pages = [{ label: '首页', href: '/' }, { label: '关于我', href: '/about/' }, { label: '项目', href: '/projects/' }, { label: '文章', href: '/articles/' }, { label: '时间轴', href: '/timeline/' }, { label: '作品', href: '/portfolio/' }];
+---
+<html lang="zh-CN"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width" /><meta name="robots" content="noindex,nofollow" /><title>前台预览</title></head><body class="admin-body"><main class="admin-shell"><p><a href="/admin">返回 Website Studio</a></p><header class="admin-topbar"><div><p class="admin-kicker">预览</p><h1>打开前台页面</h1><p>保存前打开对应页面检查内容，页面会在新标签页显示。</p></div></header><section class="admin-actions">{pages.map((page) => <a href={page.href} target="_blank" rel="noreferrer">查看{page.label}</a>)}</section></main></body></html>

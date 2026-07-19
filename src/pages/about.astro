@@ -1,0 +1,42 @@
+---
+import ContentContainer from '../components/ContentContainer.astro';
+import ImageFrame from '../components/ImageFrame.astro';
+import Section from '../components/Section.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { getProfileData } from '../lib/site-data.js';
+import { sortVisible } from '../lib/p2-models.js';
+const profile = await getProfileData();
+const paragraph = (value = '') => value.split(/\n\s*\n/).filter(Boolean);
+const placeholder = profile?.contentStatus === 'placeholder';
+---
+
+<SiteLayout title="关于我" description={profile?.shortBio}>
+  <Section>
+    <ContentContainer>
+      <div class="about-intro">
+        <div>
+          <div class="section-header__eyebrow">关于我</div>
+          <h1>{profile?.displayName}</h1>
+          <p class="about-intro__bio">{profile?.shortBio}</p>
+          {placeholder && <p class="placeholder-note">当前页面含待补充的占位内容。</p>}
+        </div>
+        {profile?.portrait && <ImageFrame src={profile.portrait} alt={`${profile.displayName} 的肖像`} class="about-intro__portrait" />}
+      </div>
+    </ContentContainer>
+  </Section>
+  <Section compact><ContentContainer><SectionHeader title="个人简介" />{paragraph(profile?.fullBio).map((text) => <p>{text}</p>)}</ContentContainer></Section>
+  <Section compact><ContentContainer><SectionHeader title="当前信息" /><dl class="about-facts">
+    {profile?.currentRole && <><dt>当前身份</dt><dd>{profile.currentRole}</dd></>}
+    {profile?.location && <><dt>所在地</dt><dd>{profile.location}</dd></>}
+    {profile?.educationSummary && <><dt>教育概览</dt><dd>{profile.educationSummary}</dd></>}
+    {profile?.availabilityStatus && <><dt>当前状态</dt><dd>{profile.availabilityStatus}</dd></>}
+    {profile?.email && <><dt>邮箱</dt><dd><a href={`mailto:${profile.email}`}>{profile.email}</a></dd></>}
+    {profile?.resumeUrl && <><dt>简历</dt><dd><a href={profile.resumeUrl}>查看简历</a></dd></>}
+  </dl></ContentContainer></Section>
+  <Section compact><ContentContainer><div class="about-columns">
+    <div><SectionHeader title="兴趣与方向" />{sortVisible(profile?.interests).map((item) => <article class="about-list-item"><h3>{item.title}</h3><p>{item.description}</p></article>)}</div>
+    <div><SectionHeader title="技能与语言" />{sortVisible(profile?.skills).length > 0 && <div class="stack"><h3>技能</h3>{sortVisible(profile.skills).map((item) => <p><strong>{item.title}</strong>{item.description && `：${item.description}`}</p>)}</div>}{sortVisible(profile?.languages).length > 0 && <div class="stack"><h3>语言</h3>{sortVisible(profile.languages).map((item) => <p><strong>{item.title}</strong>{item.description && `：${item.description}`}</p>)}</div>}</div>
+  </div></ContentContainer></Section>
+  <Section compact><ContentContainer><div class="about-columns"><div><SectionHeader title="个人理念" />{paragraph(profile?.philosophy).map((text) => <p>{text}</p>)}</div><div><SectionHeader title="未来方向" />{paragraph(profile?.futureDirection).map((text) => <p>{text}</p>)}</div></div></ContentContainer></Section>
+</SiteLayout>

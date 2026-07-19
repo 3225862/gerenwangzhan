@@ -1,0 +1,11 @@
+title: P0 草稿测试项目
+slug: p0-draft
+summary: 用于验证草稿不会进入生产公开页面。
+body: 这条内容应只在本地后台可见。
+coverImage: null
+status: planned
+featured: false
+sortOrder: 2
+publishedAt: null
+draft: true
+publicationStatus: draft

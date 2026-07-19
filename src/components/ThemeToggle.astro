@@ -1,0 +1,18 @@
+<button class="control-button" type="button" data-theme-toggle aria-label="切换明暗模式" title="切换明暗模式">
+  <span class="theme-glyph" aria-hidden="true">◐</span>
+  <span class="visually-hidden">切换明暗模式</span>
+</button>
+
+<script>
+  const toggle = document.querySelector('[data-theme-toggle]');
+  const root = document.documentElement;
+  const stored = localStorage.getItem('theme');
+  const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const initial = stored === 'light' || stored === 'dark' ? stored : systemDark ? 'dark' : 'light';
+  root.dataset.theme = initial;
+  toggle?.addEventListener('click', () => {
+    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    localStorage.setItem('theme', next);
+  });
+</script>

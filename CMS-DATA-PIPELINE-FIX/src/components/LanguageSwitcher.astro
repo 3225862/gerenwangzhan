@@ -1,0 +1,6 @@
+---
+const languages = ['zh'];
+---
+<nav aria-label="语言切换" class="cluster">
+  {languages.map((language) => <a class="caption" href={language === 'zh' ? '/' : `/${language}/`}>{language.toUpperCase()}</a>)}
+</nav>

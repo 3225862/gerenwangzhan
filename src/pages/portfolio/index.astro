@@ -1,0 +1,6 @@
+---
+// @ts-nocheck
+import { getCollection } from 'astro:content'; import ContentContainer from '../../components/ContentContainer.astro'; import Section from '../../components/Section.astro'; import SectionHeader from '../../components/SectionHeader.astro'; import SiteLayout from '../../layouts/SiteLayout.astro'; import { publicEntries, sortEntries } from '../../lib/extended-models.js';
+const items = sortEntries(publicEntries(await getCollection('portfolio')));
+---
+<SiteLayout title="作品与成果" description="作品与成果记录。"><Section><ContentContainer><SectionHeader eyebrow="作品" title="作品与成果" description="持续整理中的作品记录。" />{items.length === 0 ? <div class="empty-state">暂无已发布作品。</div> : <div class="project-grid">{items.map(({ data }) => <article class="card project-card"><div class="cluster">{data.featured && <span class="tag">推荐</span>}{data.tags.map((tag) => <span class="tag">{tag}</span>)}</div><h2>{data.title}</h2><p>{data.summary}</p><a href={`/portfolio/${data.slug}/`}>查看作品</a></article>)}</div>}</ContentContainer></Section></SiteLayout>

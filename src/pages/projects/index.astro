@@ -1,0 +1,26 @@
+---
+// @ts-nocheck
+import { getCollection } from 'astro:content';
+import ContentContainer from '../../components/ContentContainer.astro';
+import Section from '../../components/Section.astro';
+import SectionHeader from '../../components/SectionHeader.astro';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import { publicEntries, sortEntries } from '../../lib/extended-models.js';
+const projects = sortEntries(publicEntries(await getCollection('projects')));
+const statuses = [...new Set(projects.map(({ data }) => data.status))];
+const tags = [...new Set(projects.flatMap(({ data }) => data.tags ?? []))];
+---
+<SiteLayout title="项目" description="已发布的项目与实践记录。">
+  <Section><ContentContainer><SectionHeader eyebrow="项目" title="项目与实践" description="按状态和标签浏览已发布项目。" />
+    <div class="project-filters" data-project-filters>
+      <label>状态 <select data-filter-status><option value="all">全部</option>{statuses.map((status) => <option value={status}>{status}</option>)}</select></label>
+      <label>标签 <select data-filter-tag><option value="all">全部</option>{tags.map((tag) => <option value={tag}>{tag}</option>)}</select></label>
+    </div>
+    {projects.length === 0 ? <div class="empty-state">暂无已发布项目。</div> : <div class="project-grid" data-project-list>{projects.map(({ data }) => <article class="card project-card" data-status={data.status} data-tags={(data.tags ?? []).join(',')}><div class="cluster"><span class="tag">{data.status}</span>{data.featured && <span class="tag">推荐</span>}</div><h2>{data.title}</h2>{data.subtitle && <p class="muted">{data.subtitle}</p>}<p>{data.summary}</p><a href={`/projects/${data.slug}/`}>查看详情</a></article>)}</div>}
+  </ContentContainer></Section>
+</SiteLayout>
+<script>
+  const filters = document.querySelector('[data-project-filters]'); const list = document.querySelectorAll('[data-project-list] article') as NodeListOf<HTMLElement>;
+  const update = () => { const status = (document.querySelector('[data-filter-status]') as HTMLSelectElement | null)?.value ?? 'all'; const tag = (document.querySelector('[data-filter-tag]') as HTMLSelectElement | null)?.value ?? 'all'; list.forEach((item) => { const matchStatus = status === 'all' || item.dataset.status === status; const matchTag = tag === 'all' || item.dataset.tags?.split(',').includes(tag); item.hidden = !(matchStatus && matchTag); }); };
+  filters?.addEventListener('change', update);
+</script>

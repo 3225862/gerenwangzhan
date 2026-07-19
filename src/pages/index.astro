@@ -1,0 +1,48 @@
+---
+import { getCollection } from 'astro:content';
+import Button from '../components/Button.astro';
+import Card from '../components/Card.astro';
+import ContentContainer from '../components/ContentContainer.astro';
+import ImageFrame from '../components/ImageFrame.astro';
+import Section from '../components/Section.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { getHomepageData } from '../lib/site-data.js';
+import { getFeaturedProjects, sortVisible } from '../lib/p2-models.js';
+
+const homepage = await getHomepageData();
+const projects = getFeaturedProjects(await getCollection('projects'), homepage?.featuredProjectsLimit ?? 0);
+const visible = homepage?.sectionVisibility ?? {};
+const order = homepage?.sectionOrder ?? [];
+const placeholder = homepage?.contentStatus === 'placeholder';
+const paragraph = (value = '') => value.split(/\n\s*\n/).filter(Boolean);
+---
+
+<SiteLayout title={homepage?.heroTitle ?? '首页'} description={homepage?.heroDescription}>
+  <section class="home-hero section">
+    <ContentContainer>
+      <div class="home-hero__grid">
+        <div class="home-hero__content">
+          {homepage?.eyebrow && <div class="section-header__eyebrow">{homepage.eyebrow}</div>}
+          <h1 class="home-hero__title">{homepage?.heroTitle}</h1>
+          <p class="home-hero__description">{homepage?.heroDescription}</p>
+          <div class="cluster">
+            <Button href={homepage?.primaryCtaUrl}>{homepage?.primaryCtaLabel}</Button>
+            {homepage?.secondaryCtaUrl && <Button href={homepage.secondaryCtaUrl} variant="secondary">{homepage.secondaryCtaLabel}</Button>}
+          </div>
+          {placeholder && <p class="placeholder-note">当前页面含待补充的占位内容。</p>}
+        </div>
+        {homepage?.showHeroImage && homepage.heroImage && <div class="home-hero__visual"><ImageFrame src={homepage.heroImage} alt="首页主视觉" /></div>}
+      </div>
+    </ContentContainer>
+  </section>
+
+  {order.map((section: string) => {
+    if (!visible[section]) return null;
+    if (section === 'introduction') return <Section compact><ContentContainer><SectionHeader title={homepage.introductionTitle} /><div class="home-copy">{paragraph(homepage.introductionBody).map((text) => <p>{text}</p>)}</div></ContentContainer></Section>;
+    if (section === 'focus') return <Section compact><ContentContainer><SectionHeader title="关注方向" /><div class="home-focus-grid">{sortVisible(homepage.focusAreas).map((item) => <article class="home-focus-item"><h3>{item.title}</h3><p>{item.description}</p></article>)}</div></ContentContainer></Section>;
+    if (section === 'featured') return <Section compact id="featured-projects"><ContentContainer><SectionHeader title="推荐项目" description="仅展示已发布并标记为推荐的项目。" />{projects.length === 0 ? <div class="empty-state">暂无推荐项目。</div> : <div class="home-featured-grid">{projects.map((project: (typeof projects)[number]) => { const { data } = project; return <Card class="home-featured-card"><div class="home-featured-card__image"><ImageFrame src={data.coverImage} alt={`${data.title} 封面`} /></div><div class="stack"><div class="cluster"><span class="tag">{data.status}</span></div><h3>{data.title}</h3><p>{data.summary}</p><a href={`/projects/${data.slug}/`}>查看项目</a></div></Card>; })}</div>}</ContentContainer></Section>;
+    if (section === 'status') return <Section compact><ContentContainer><div class="home-status"><SectionHeader title={homepage.currentStatusTitle} /><div class="home-copy">{paragraph(homepage.currentStatusBody).map((text) => <p>{text}</p>)}</div></div></ContentContainer></Section>;
+    return <Section compact><ContentContainer><div class="home-contact"><SectionHeader title={homepage.contactTitle} description={homepage.contactDescription} />{homepage.contactCtaUrl && <Button href={homepage.contactCtaUrl}>{homepage.contactCtaLabel}</Button>}</div></ContentContainer></Section>;
+  })}
+</SiteLayout>
