@@ -1,24 +1,21 @@
 contentStatus: ready
-eyebrow: 个人空间
+eyebrow: 个人空
 heroTitle: 记录项目、文章与长期思考。
 heroDescription: 这里整理正在做的事、已经完成的工作，以及值得持续思考的问题。
 primaryCtaLabel: 了解我
 primaryCtaUrl: /about/
 secondaryCtaLabel: 查看推荐项目
 secondaryCtaUrl: '#featured-projects'
-heroImage: null
 showHeroImage: false
 introductionTitle: 关于这个空间
 introductionBody: 这是一个用于整理个人项目、文章和长期方向的公开空间。
 focusAreas:
   - title: 项目实践
     description: 记录正在进行和已经完成的项目。
-    icon: ''
     visible: true
     sortOrder: 1
   - title: 持续写作
     description: 整理值得长期保存的文章和思考。
-    icon: ''
     visible: true
     sortOrder: 2
 featuredProjectsLimit: 2
