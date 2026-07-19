@@ -7,6 +7,14 @@ const isGithubMode =
 const getGithubRepo = () => {
   const repo = process.env.KEYSTATIC_GITHUB_REPO?.trim();
 
+  console.info('[Keystatic env diagnostics]', {
+    isBrowser: typeof window !== 'undefined',
+    nodeEnv: process.env.NODE_ENV,
+    keyStaticMode: process.env.KEYSTATIC_MODE,
+    hasGithubRepo: Boolean(repo),
+    githubRepo: repo ?? null,
+  });
+
   if (!repo) {
     throw new Error(
       'KEYSTATIC_GITHUB_REPO is required when KEYSTATIC_MODE=github. Expected "owner/name".',
