@@ -1,7 +1,31 @@
 import { collection, config, fields, singleton } from '@keystatic/core';
 
-const isGithubMode = (process.env.KEYSTATIC_MODE ?? (process.env.NODE_ENV === 'production' ? 'github' : 'local')) === 'github';
-const githubRepo = process.env.KEYSTATIC_GITHUB_REPO ?? 'owner/repository';
+const isGithubMode =
+  (process.env.KEYSTATIC_MODE ?? (process.env.NODE_ENV === 'production' ? 'github' : 'local')) ===
+  'github';
+
+const getGithubRepo = () => {
+  const repo = process.env.KEYSTATIC_GITHUB_REPO?.trim();
+
+  if (!repo) {
+    throw new Error(
+      'KEYSTATIC_GITHUB_REPO is required when KEYSTATIC_MODE=github. Expected "owner/name".',
+    );
+  }
+
+  const [owner, name, extra] = repo.split('/');
+  if (!owner || !name || extra) {
+    throw new Error(
+      `Invalid KEYSTATIC_GITHUB_REPO "${repo}". Expected "owner/name", for example "3225862/gerenwangzhan".`,
+    );
+  }
+
+  return { owner, name };
+};
+
+const storage = isGithubMode
+  ? ({ kind: 'github', repo: getGithubRepo() } as const)
+  : ({ kind: 'local' } as const);
 
 const imageOptions = {
   directory: 'public/uploads/projects',
@@ -9,9 +33,7 @@ const imageOptions = {
 };
 
 export default config({
-  storage: {
-    ...(isGithubMode ? { kind: 'github' as const, repo: githubRepo } : { kind: 'local' as const }),
-  },
+  storage,
   ui: {
     brand: { name: 'Website Studio' },
     navigation: ['homepage', 'profile', 'siteSettings', 'projects', 'articles'],
