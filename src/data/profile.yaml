@@ -1,18 +1,15 @@
 contentStatus: ready
-displayName: 个人网站作者
-legalName: ''
-preferredName: ''
-shortBio: 个人资料与长期方向会在这里持续整理。
+displayName: 杨天祺
+legalName: YANG TENQI
+preferredName: ' ヤンテンキ'
+shortBio: 社会学系下的哲学生
 fullBio: 这里用于介绍个人背景、工作方向、兴趣和长期计划。具体信息会根据公开范围逐步补充。
-location: ''
-currentRole: 个人网站作者
-educationSummary: 暂未公开教育信息
-avatar: null
-portrait: null
-email: hello@example.com
-resumeUrl: ''
+location: 兵庫県
+currentRole: 学生
+email: zw24714@otemae.ac.jp
 resumePublic: false
 availabilityStatus: 目前通过网站整理公开内容
+socialLinks: []
 interests:
   - title: 项目与写作
     description: 通过项目和文章整理长期积累。
@@ -20,10 +17,9 @@ interests:
     sortOrder: 1
 skills: []
 languages: []
-socialLinks: []
 philosophy: 先把正在做的事情整理清楚，再持续迭代。
 futureDirection: 逐步补充真实经历、项目成果和长期研究方向。
 displayNamePublic: true
-legalNamePublic: false
-locationPublic: false
-emailPublic: false
+legalNamePublic: true
+locationPublic: true
+emailPublic: true
