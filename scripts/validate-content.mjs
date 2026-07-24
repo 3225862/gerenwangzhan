@@ -8,6 +8,7 @@ import {
   projectSchema,
   validateProjectDocuments,
 } from '../src/lib/project-validation.js';
+import { homepageSchema, profileSchema, siteSettingsSchema } from '../src/lib/p2-models.js';
 
 const projectFiles = [];
 for await (const file of glob('src/content/projects/*.yaml')) projectFiles.push(file);
@@ -24,6 +25,22 @@ for (const file of projectFiles.sort()) {
 
 const errors = validateProjectDocuments(documents);
 const publicDir = resolve('public');
+const singletonSchemas = [
+  ['src/data/homepage.yaml', homepageSchema],
+  ['src/data/profile.yaml', profileSchema],
+  ['src/data/site-settings.yaml', siteSettingsSchema],
+];
+
+for (const [file, schema] of singletonSchemas) {
+  try {
+    schema.parse(parse(await readFile(file, 'utf8')));
+  } catch (error) {
+    const details = error.issues
+      ?.map((issue) => `${issue.path.join('.') || '(root)'}: ${issue.message}`)
+      .join('; ');
+    errors.push(`${file}: ${details || error.message}`);
+  }
+}
 
 for (const document of documents) {
   const parsed = projectSchema.safeParse(document.data);

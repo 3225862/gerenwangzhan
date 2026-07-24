@@ -286,8 +286,16 @@ export default config({
         displayName: fields.text({ label: '公开称呼', validation: { isRequired: true } }),
         legalName: fields.text({ label: '法定姓名' }),
         preferredName: fields.text({ label: '偏好称呼' }),
-        shortBio: fields.text({ label: '短简介', multiline: true }),
-        fullBio: fields.text({ label: '完整简介（支持 Markdown 语法文本）', multiline: true }),
+        shortBio: fields.text({
+          label: '短简介',
+          multiline: true,
+          validation: { isRequired: true },
+        }),
+        fullBio: fields.text({
+          label: '完整简介（支持 Markdown 语法文本）',
+          multiline: true,
+          validation: { isRequired: true },
+        }),
         location: fields.text({ label: '所在地' }),
         currentRole: fields.text({ label: '当前身份' }),
         educationSummary: fields.text({ label: '教育概览', multiline: true }),

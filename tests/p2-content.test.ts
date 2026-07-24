@@ -22,6 +22,8 @@ describe('P2 内容模型', () => {
     expect(profileSchema.parse(profile).displayName).toBe('公开称呼');
     expect(() => homepageSchema.parse({ ...homepage, heroTitle: '' })).toThrow();
     expect(() => profileSchema.parse({ ...profile, displayName: '' })).toThrow();
+    expect(() => profileSchema.parse({ ...profile, shortBio: '' })).toThrow();
+    expect(() => profileSchema.parse({ ...profile, fullBio: '' })).toThrow();
   });
   it('校验站内路径、锚点和安全链接', () => {
     expect(safeUrl.parse('/about/')).toBe('/about/');
